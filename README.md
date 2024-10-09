@@ -27,6 +27,6 @@ This project is a Kotlin-based Movie App that utilizes the OMDB API to fetch mov
 
 ## Package Structure
 
--data
-  -models
-  -repository
+- data
+  - models
+  - repository
