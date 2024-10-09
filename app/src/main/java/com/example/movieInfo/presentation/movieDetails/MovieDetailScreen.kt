@@ -88,12 +88,12 @@ fun MovieDetails(movieDetails: MovieDetailsResponse) {
             .verticalScroll(rememberScrollState())
     ) {
         Image(
-            painter = rememberImagePainter(movieDetails.Poster,
+            painter = rememberImagePainter(movieDetails.poster,
                 builder = {
                     error(R.drawable.image_not_available)
                     placeholder(R.drawable.image_not_available)
                 }),
-            contentDescription = movieDetails.Title,
+            contentDescription = movieDetails.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
@@ -104,7 +104,7 @@ fun MovieDetails(movieDetails: MovieDetailsResponse) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = movieDetails.Title,
+            text = movieDetails.title,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
@@ -112,23 +112,23 @@ fun MovieDetails(movieDetails: MovieDetailsResponse) {
         Spacer(modifier = Modifier.height(8.dp))
 
         // Movie Details
-        DetailRow("Year", movieDetails.Year)
-        DetailRow("Rated", movieDetails.Rated)
-        DetailRow("Released", movieDetails.Released)
-        DetailRow("Runtime", movieDetails.Runtime)
-        DetailRow("Genre", movieDetails.Genre)
-        DetailRow("Director", movieDetails.Director)
-        DetailRow("Writer", movieDetails.Writer)
-        DetailRow("Actors", movieDetails.Actors)
-        DetailRow("Plot", movieDetails.Plot)
-        DetailRow("Language", movieDetails.Language)
-        DetailRow("Country", movieDetails.Country)
-        DetailRow("Awards", movieDetails.Awards)
+        DetailRow("Year", movieDetails.year)
+        DetailRow("Rated", movieDetails.rated)
+        DetailRow("Released", movieDetails.released)
+        DetailRow("Runtime", movieDetails.runtime)
+        DetailRow("Genre", movieDetails.genre)
+        DetailRow("Director", movieDetails.director)
+        DetailRow("Writer", movieDetails.writer)
+        DetailRow("Actors", movieDetails.actors)
+        DetailRow("Plot", movieDetails.plot)
+        DetailRow("Language", movieDetails.language)
+        DetailRow("Country", movieDetails.country)
+        DetailRow("Awards", movieDetails.awards)
         DetailRow("IMDb Rating", movieDetails.imdbRating)
         DetailRow("IMDb Votes", movieDetails.imdbVotes)
-        DetailRow("BoxOffice", movieDetails.BoxOffice)
-        DetailRow("Production", movieDetails.Production)
-        DetailRow("Website", movieDetails.Website)
+        DetailRow("BoxOffice", movieDetails.boxOffice)
+        DetailRow("Production", movieDetails.production)
+        DetailRow("Website", movieDetails.website)
     }
 }
 

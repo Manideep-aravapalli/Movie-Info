@@ -1,7 +1,6 @@
 package com.example.movieInfo.presentation.home
 
 import android.app.Activity
-import android.os.Debug
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -59,7 +57,6 @@ object HomeScreen
 @Composable
 fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.homeState.collectAsState()
-    var searchQuery by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
 
     BackHandler {
@@ -77,13 +74,9 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
                 state.isLoading && state.movies.isEmpty() -> Loader()
                 state.errorMessage != null -> ErrorMessage(state.errorMessage!!)
                 else -> {
-                    //AddEditText(searchQuery)
-                    OutlinedTextField(value = searchQuery, onValueChange = {
-                        searchQuery = it
-                        if (searchQuery.length >= 3) {
-                            viewModel.processIntent(HomeIntent.SearchBasedOnValue(searchQuery))
-                        }
-                    }, placeholder = { Text(text = "Search Movies...") })
+                    //MovieList(state.movies,listState)
+
+                    AddSearchEditText(viewModel)
                     Spacer(modifier = Modifier.height(10.dp))
                     LazyColumn(state = listState) {
                         items(state.movies) { movie ->
@@ -120,9 +113,18 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
     }
 }
 
+
 @Composable
-fun AddEditText(searchQuery: String) {
-//SearchBar(inputField = DefaultIn, expanded = , onExpandedChange = ) {
+fun AddSearchEditText(viewModel: HomeViewModel) {
+    var searchQuery by remember { mutableStateOf("") }
+    OutlinedTextField(value = searchQuery, onValueChange = {
+        searchQuery = it
+        if (searchQuery.length >= 3) {
+            viewModel.processIntent(HomeIntent.SearchBasedOnValue(searchQuery))
+        }
+    }, placeholder = { Text(text = "Search Movies...") },
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
@@ -152,7 +154,7 @@ fun MovieCard(movie: Movie, onClick: () -> Unit) {
                         error(R.drawable.image_not_available)
                         placeholder(R.drawable.image_not_available)
                     }),
-                contentDescription = movie.Title,
+                contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(100.dp)
@@ -170,14 +172,14 @@ fun MovieCard(movie: Movie, onClick: () -> Unit) {
 fun MovieDetails(movie: Movie) {
     Column {
         Text(
-            text = movie.Title,
+            text = movie.title,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
         )
         Spacer(modifier = Modifier.height(10.dp))
-        DetailRow(label = "Type :", value = movie.Type)
-        DetailRow(label = "Year :", value = movie.Year)
+        DetailRow(label = "Type :", value = movie.type)
+        DetailRow(label = "Year :", value = movie.year)
     }
 }
 
@@ -188,6 +190,11 @@ fun HomeScreenPreview() {
     HomeScreen(navController = navController)
 }
 
+@Preview(showBackground = true)
+@Composable
+fun AddSearchEditTextPreview() {
+//    AddSearchEditText(viewModel = HomeViewModel(MovieRepository(RemoteDataSource(apiService = ))))
+}
 
 @Preview(showBackground = true)
 @Composable
