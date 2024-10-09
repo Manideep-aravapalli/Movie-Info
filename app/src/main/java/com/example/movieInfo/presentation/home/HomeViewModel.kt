@@ -14,7 +14,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val movieRepository: MovieRepository) :
+open class HomeViewModel @Inject constructor(private val movieRepository: MovieRepository) :
     ViewModel() {
 
     private val mutableHomeState = MutableStateFlow(HomeState())
@@ -71,12 +71,12 @@ class HomeViewModel @Inject constructor(private val movieRepository: MovieReposi
                     response.body()?.let { movieResponse ->
                         if (handleLoadData) {
                             mutableHomeState.value = mutableHomeState.value.copy(
-                                movies = movieResponse.Search,
+                                movies = movieResponse.search,
                                 isLoading = false
                             )
                         } else {
                             mutableHomeState.value = mutableHomeState.value.copy(
-                                movies = mutableHomeState.value.movies + movieResponse.Search,
+                                movies = mutableHomeState.value.movies + movieResponse.search,
                                 isLoading = false
                             )
                         }

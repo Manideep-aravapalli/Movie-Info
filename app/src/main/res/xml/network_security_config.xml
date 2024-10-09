@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">https://www.omdbapi.com</domain>
+        <domain includeSubdomains="true">https://img.omdbapi.com</domain>
+    </domain-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">secure-site.com</domain>
+    </domain-config>
+    <base-config cleartextTrafficPermitted="false">
+        <!-- Use this section to apply settings to all domains by default -->
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

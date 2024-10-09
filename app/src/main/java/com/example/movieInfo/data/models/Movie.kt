@@ -1,9 +1,22 @@
 package com.example.movieInfo.data.models
 
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+
 data class Movie(
-    val Title: String,
-    val Year: String,
+    @SerializedName("Title")
+    @Expose
+    val title: String,
+    @SerializedName("Year")
+    @Expose
+    val year: String,
+    @SerializedName("imdbID")
+    @Expose
     val imdbID: String,
-    val Type: String,
-    val Poster: String
+    @SerializedName("Type")
+    @Expose
+    val type: String,
+    @SerializedName("Poster")
+    @Expose
+    val poster: String
 )
