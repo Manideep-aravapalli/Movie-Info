@@ -30,3 +30,12 @@ This project is a Kotlin-based Movie App that utilizes the OMDB API to fetch mov
 - data
   - models
   - repository
+  - scourses
+      - remote
+          - ApiService.kt
+          - RemoteDataScource.kt
+  - network
+      - Networkmodule.kt
+- di
+  - AppModule.kt
+- 
