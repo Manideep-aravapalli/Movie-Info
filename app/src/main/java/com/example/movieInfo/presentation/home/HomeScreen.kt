@@ -57,6 +57,7 @@ object HomeScreen
 @Composable
 fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.homeState.collectAsState()
+    var searchQuery by remember { mutableStateOf("") }
     val listState = rememberLazyListState()
 
     BackHandler {
@@ -74,9 +75,15 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
                 state.isLoading && state.movies.isEmpty() -> Loader()
                 state.errorMessage != null -> ErrorMessage(state.errorMessage!!)
                 else -> {
-                    //MovieList(state.movies,listState)
-
-                    AddSearchEditText(viewModel)
+                    AddSearchEditText(
+                        searchQuery = searchQuery,
+                        onSearchQueryChange = { newQuery ->
+                            searchQuery = newQuery
+                            if (newQuery.length >= 3) {
+                                viewModel.processIntent(HomeIntent.SearchBasedOnValue(newQuery))
+                            }
+                        }
+                    )
                     Spacer(modifier = Modifier.height(10.dp))
                     LazyColumn(state = listState) {
                         items(state.movies) { movie ->
@@ -115,14 +122,11 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
 
 
 @Composable
-fun AddSearchEditText(viewModel: HomeViewModel) {
-    var searchQuery by remember { mutableStateOf("") }
-    OutlinedTextField(value = searchQuery, onValueChange = {
-        searchQuery = it
-        if (searchQuery.length >= 3) {
-            viewModel.processIntent(HomeIntent.SearchBasedOnValue(searchQuery))
-        }
-    }, placeholder = { Text(text = "Search Movies...") },
+fun AddSearchEditText(searchQuery: String, onSearchQueryChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = searchQuery,
+        onValueChange = onSearchQueryChange,
+        placeholder = { Text(text = "Search Movies...") },
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -178,8 +182,8 @@ fun MovieDetails(movie: Movie) {
             color = Color.Black
         )
         Spacer(modifier = Modifier.height(10.dp))
-        DetailRow(label = "Type :", value = movie.type)
-        DetailRow(label = "Year :", value = movie.year)
+        DetailRow(label = "Type ", value = movie.type)
+        DetailRow(label = "Year ", value = movie.year)
     }
 }
 
@@ -193,7 +197,7 @@ fun HomeScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 fun AddSearchEditTextPreview() {
-//    AddSearchEditText(viewModel = HomeViewModel(MovieRepository(RemoteDataSource(apiService = ))))
+    AddSearchEditText(searchQuery = "", onSearchQueryChange = {})
 }
 
 @Preview(showBackground = true)

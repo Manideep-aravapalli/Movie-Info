@@ -3,18 +3,17 @@ package com.example.movieInfo.presentation.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieInfo.data.models.MovieResponse
-import com.example.movieInfo.data.repository.MovieRepository
+import com.example.movieInfo.domain.useCase.GetMoviesUseCase
 import com.example.movieInfo.presentation.movieDetails.MovieDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-open class HomeViewModel @Inject constructor(private val movieRepository: MovieRepository) :
+open class HomeViewModel @Inject constructor(private val getMoviesUseCase: GetMoviesUseCase
+) :
     ViewModel() {
 
     private val mutableHomeState = MutableStateFlow(HomeState())
@@ -65,7 +64,7 @@ open class HomeViewModel @Inject constructor(private val movieRepository: MovieR
         viewModelScope.launch {
             try {
                 mutableHomeState.value = mutableHomeState.value.copy(isLoading = true)
-                val response: Response<MovieResponse> = movieRepository.getMovies(search, page)
+                val response = getMoviesUseCase(search,page)
                 Log.e("TAG", "Response--> ${response.body()}")
                 if (response.isSuccessful) {
                     response.body()?.let { movieResponse ->
