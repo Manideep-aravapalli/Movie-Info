@@ -18,6 +18,5 @@ fun AppNavigation(navController: NavHostController) {
             val imdbID = backStackEntry.toRoute<MovieDetailScreen>()
             MovieDetailScreen(imdbID = imdbID.id, navController = navController)
         }
-//        composable(route = "search") { SearchScreen(navController) }
     }
 }

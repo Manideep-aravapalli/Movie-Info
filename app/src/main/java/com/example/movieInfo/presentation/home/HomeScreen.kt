@@ -49,6 +49,7 @@ import com.example.movieInfo.presentation.common.CommonAppBar
 import com.example.movieInfo.presentation.common.DetailRow
 import com.example.movieInfo.presentation.common.ErrorMessage
 import com.example.movieInfo.presentation.common.Loader
+import com.example.movieInfo.presentation.components.MovieCard
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -133,61 +134,6 @@ fun AddSearchEditText(searchQuery: String, onSearchQueryChange: (String) -> Unit
     )
 }
 
-@Composable
-fun MovieCard(movie: Movie, onClick: () -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-            contentColor = Color.Black
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = BorderStroke(
-            width = 0.5.dp,
-            color = Color.LightGray
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-            .padding(bottom = 10.dp)
-            .clickable(onClick = onClick)
-            .clip(RoundedCornerShape(5.dp)),
-    ) {
-        Row(modifier = Modifier.padding(10.dp)) {
-//            GlideImage("https://img.omdbapi.com/?apikey=376078fc&i=tt18689424")
-            Image(
-                painter = rememberImagePainter("http://img.omdbapi.com/?apikey=376078fc&i=tt18689424",
-                    builder = {
-                        error(R.drawable.image_not_available)
-                        placeholder(R.drawable.image_not_available)
-                    }),
-                contentDescription = movie.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(300.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-
-                )
-            Spacer(modifier = Modifier.width(10.dp))
-            MovieDetails(movie)
-        }
-    }
-}
-
-@Composable
-fun MovieDetails(movie: Movie) {
-    Column {
-        Text(
-            text = movie.title,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        DetailRow(label = "Type ", value = movie.type)
-        DetailRow(label = "Year ", value = movie.year)
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -200,11 +146,4 @@ fun HomeScreenPreview() {
 @Composable
 fun AddSearchEditTextPreview() {
     AddSearchEditText(searchQuery = "", onSearchQueryChange = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MovieCardPreview() {
-    val movie = Movie("1", "Inception", "Movie", "2010", "url")
-    MovieCard(movie, onClick = {})
 }

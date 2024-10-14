@@ -2,7 +2,7 @@ package com.example.movieInfo.home
 
 import com.example.movieInfo.data.models.Movie
 import com.example.movieInfo.data.models.MovieResponse
-import com.example.movieInfo.data.repository.MovieRepository
+import com.example.movieInfo.domain.useCase.GetMoviesUseCase
 import com.example.movieInfo.presentation.home.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -20,12 +20,12 @@ import org.junit.Test
 class HomeViewModelTest {
 
     private lateinit var viewModel: HomeViewModel
-    private val movieRepository: MovieRepository = mockk()
+    private val getMoviesUseCase: GetMoviesUseCase = mockk()
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
-        viewModel = HomeViewModel(movieRepository)
+        viewModel = HomeViewModel(getMoviesUseCase)
         Dispatchers.setMain(testDispatcher)
     }
 
@@ -34,7 +34,7 @@ class HomeViewModelTest {
         // Arrange
         val movies = listOf(Movie("1", "Inception", "Movie", "2010", "url"))
         val movieResponse = MovieResponse(movies, "", "True")
-        coEvery { movieRepository.getMovies("Batman", 1) } returns retrofit2.Response.success(
+        coEvery { getMoviesUseCase("Batman", 1) } returns retrofit2.Response.success(
             movieResponse
         )
 
@@ -53,7 +53,7 @@ class HomeViewModelTest {
     fun `loadMovies returns error message on failure`() = runTest {
         // Arrange
         val errorMessage = "Network Error"
-        coEvery { movieRepository.getMovies("Batman", 1) } throws Exception(errorMessage)
+        coEvery { getMoviesUseCase("Batman", 1) } throws Exception(errorMessage)
 
         // Act
         viewModel.loadMovies("Batman", 1)
@@ -71,13 +71,13 @@ class HomeViewModelTest {
         // Arrange
         val moviesPage1 = listOf(Movie("1", "Inception", "Movie", "2010", "url"))
         val movieResponsePage1 = MovieResponse(moviesPage1, "", "True")
-        coEvery { movieRepository.getMovies("Batman", 1) } returns retrofit2.Response.success(
+        coEvery { getMoviesUseCase("Batman", 1) } returns retrofit2.Response.success(
             movieResponsePage1
         )
 
         val moviesPage2 = listOf(Movie("2", "The Matrix", "Movie", "1999", "url"))
         val movieResponsePage2 = MovieResponse(moviesPage2, "", "True")
-        coEvery { movieRepository.getMovies("Batman", 2) } returns retrofit2.Response.success(
+        coEvery { getMoviesUseCase("Batman", 2) } returns retrofit2.Response.success(
             movieResponsePage2
         )
 
