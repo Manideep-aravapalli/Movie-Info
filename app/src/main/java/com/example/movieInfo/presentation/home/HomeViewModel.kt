@@ -24,7 +24,6 @@ open class HomeViewModel @Inject constructor(private val getMoviesUseCase: GetMo
     private var handleLoadData = false
 
     init {
-        Log.e("TAG", "Init Block: ", )
         processIntent(HomeIntent.LoadMovies)
     }
 
@@ -32,16 +31,13 @@ open class HomeViewModel @Inject constructor(private val getMoviesUseCase: GetMo
         when (intent) {
             is HomeIntent.LoadMovies -> {
                 handleLoadData = false
-                Log.e("TAG", "processIntent - loadMovies: $currentPage -- $movieName")
                 loadMovies(movieName, currentPage)
             }
 
             is HomeIntent.LoadNextPage -> {
                 currentPage++
                 handleLoadData = false
-                Log.e("TAG", "processIntent --- loadMovies: $currentPage -- $movieName")
                 loadMovies(movieName, currentPage)
-//                loadNextPage()
             }
 
             is HomeIntent.NavigateToMovieDetail -> {
@@ -54,7 +50,6 @@ open class HomeViewModel @Inject constructor(private val getMoviesUseCase: GetMo
                 handleLoadData = true
                 currentPage = 1
                 movieName = intent.searchQuery
-                Log.e("TAG", "processIntent -- loadMovies: $currentPage -- $movieName")
                 loadMovies(movieName, currentPage)
             }
         }

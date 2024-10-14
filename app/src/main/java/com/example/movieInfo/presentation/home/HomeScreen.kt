@@ -81,6 +81,8 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
                             searchQuery = newQuery
                             if (newQuery.length >= 3) {
                                 viewModel.processIntent(HomeIntent.SearchBasedOnValue(newQuery))
+                            } else if (newQuery.isEmpty()) {
+                                viewModel.processIntent(HomeIntent.SearchBasedOnValue("Batman"))
                             }
                         }
                     )
